@@ -92,6 +92,7 @@ var ThemeApp = function() {
               '</style>'
             ].join('\n');
 
+            res.set('Access-Control-Allow-Origin', '*');
             res.send(theme);
         };
     };
