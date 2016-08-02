@@ -85,7 +85,6 @@ var ThemeApp = function() {
               .join('\n');
 
             theme = [
-              '<!-- why is this failing -->',
               '<style is="custom-style">',
               '  :root {',
                     theme,
