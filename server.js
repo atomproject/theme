@@ -1,13 +1,12 @@
 #!/bin/env node
-//  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
 
 
 /**
- *  Define the sample application.
+ *  Define the application.
  */
-var SampleApp = function() {
+var ThemeApp = function() {
 
     //  Scope.
     var self = this;
@@ -33,27 +32,6 @@ var SampleApp = function() {
         };
     };
 
-
-    /**
-     *  Populate the cache.
-     */
-    self.populateCache = function() {
-        if (typeof self.zcache === "undefined") {
-            self.zcache = { 'index.html': '' };
-        }
-
-        //  Local cache for static content.
-        self.zcache['index.html'] = fs.readFileSync('./index.html');
-    };
-
-
-    /**
-     *  Retrieve entry (content) from cache.
-     *  @param {string} key  Key identifying content to retrieve from cache.
-     */
-    self.cache_get = function(key) { return self.zcache[key]; };
-
-
     /**
      *  terminator === the termination handler
      *  Terminate server on receipt of the specified signal.
@@ -61,7 +39,7 @@ var SampleApp = function() {
      */
     self.terminator = function(sig){
         if (typeof sig === "string") {
-           console.log('%s: Received %s - terminating sample app ...',
+           console.log('%s: Received %s - terminating the app ...',
                        Date(Date.now()), sig);
            process.exit(1);
         }
@@ -95,14 +73,26 @@ var SampleApp = function() {
     self.createRoutes = function() {
         self.routes = { };
 
-        self.routes['/asciimo'] = function(req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
+        self.routes['/theme.html'] = function(req, res) {
+            var theme;
 
-        self.routes['/'] = function(req, res) {
-            res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html') );
+            theme = Object.keys(req.query)
+              .map(function (optName) {
+                var optValue = req.query[optName];
+
+                return '    ' + optName + ' : ' + optValue + ';'
+              })
+              .join('\n');
+
+            theme = [
+              '<style is="custom-style">',
+              '  :root {',
+                    theme,
+              '  }',
+              '</style>'
+            ].join('\n');
+
+            res.send(theme);
         };
     };
 
@@ -123,11 +113,10 @@ var SampleApp = function() {
 
 
     /**
-     *  Initializes the sample application.
+     *  Initializes the application.
      */
     self.initialize = function() {
         self.setupVariables();
-        self.populateCache();
         self.setupTerminationHandlers();
 
         // Create the express server and routes.
@@ -136,7 +125,7 @@ var SampleApp = function() {
 
 
     /**
-     *  Start the server (starts up the sample application).
+     *  Start the server (starts up the application).
      */
     self.start = function() {
         //  Start the app on the specific interface (and port).
@@ -146,14 +135,14 @@ var SampleApp = function() {
         });
     };
 
-};   /*  Sample Application.  */
+};   /*  Theme Application.  */
 
 
 
 /**
  *  main():  Main code.
  */
-var zapp = new SampleApp();
-zapp.initialize();
-zapp.start();
+var tapp = new ThemeApp();
+tapp.initialize();
+tapp.start();
 

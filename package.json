@@ -1,7 +1,7 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "theme-app",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "Theming service for polymer applications",
   "keywords": [
     "OpenShift",
     "Node.js",
@@ -9,14 +9,13 @@
     "openshift"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+    "name": "Ajinkya Tejankar",
+    "email": "atejankar@tavisca.com"
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://atom-project.io/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "https://github.com/atomproject/theme"
   },
 
   "engines": {
